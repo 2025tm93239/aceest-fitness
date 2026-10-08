@@ -1,15 +1,17 @@
 from flask import Flask, jsonify, request
 
 from aceest.programs import GYM_METRICS, PROGRAMS
-from aceest.services import estimate_calories, list_program_names
+from aceest.services import estimate_calories, list_program_names, validate_client_payload
+from aceest.storage import get_client, list_clients, save_client
 
 
-def create_app() -> Flask:
+def create_app(testing: bool = False) -> Flask:
     app = Flask(__name__)
+    app.config["TESTING"] = testing
 
     @app.get("/")
     def health():
-        return jsonify({"service": "ACEest Fitness & Gym", "status": "ok"})
+        return jsonify({"service": "ACEest Fitness & Gym", "status": "ok", "version": "1.0.0"})
 
     @app.get("/metrics")
     def metrics():
@@ -44,6 +46,27 @@ def create_app() -> Flask:
         except (TypeError, ValueError, KeyError) as exc:
             return jsonify({"error": str(exc)}), 400
         return jsonify({"weight_kg": weight, "program": program, "calories": value})
+
+    @app.get("/clients")
+    def clients():
+        return jsonify({"clients": list_clients()})
+
+    @app.post("/clients")
+    def create_client():
+        body = request.get_json(silent=True) or {}
+        try:
+            client = validate_client_payload(body)
+        except (TypeError, ValueError) as exc:
+            return jsonify({"error": str(exc)}), 400
+        saved = save_client(client)
+        return jsonify(saved), 201
+
+    @app.get("/clients/<name>")
+    def client_detail(name: str):
+        client = get_client(name)
+        if not client:
+            return jsonify({"error": "client not found"}), 404
+        return jsonify(client)
 
     return app
 
