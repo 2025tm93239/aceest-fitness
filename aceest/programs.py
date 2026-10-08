@@ -1,5 +1,3 @@
-"""Program catalog (v1.0 data + v1.1 calorie factors)."""
-
 PROGRAMS = {
     "Fat Loss (FL)": {
         "workout": (
