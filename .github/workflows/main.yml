@@ -1,4 +1,4 @@
-name: ACEest CI/CD
+name: Aceest Fitness CI/CD
 
 on:
   push:
