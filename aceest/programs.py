@@ -1,4 +1,4 @@
-"""Program catalog from Aceestver-1.0."""
+"""Program catalog (v1.0 data + v1.1 calorie factors)."""
 
 PROGRAMS = {
     "Fat Loss (FL)": {
@@ -16,6 +16,7 @@ PROGRAMS = {
             "Target: 2,000 kcal"
         ),
         "color": "#e74c3c",
+        "calorie_factor": 22,
     },
     "Muscle Gain (MG)": {
         "workout": (
@@ -33,6 +34,7 @@ PROGRAMS = {
             "Target: 3,200 kcal"
         ),
         "color": "#2ecc71",
+        "calorie_factor": 35,
     },
     "Beginner (BG)": {
         "workout": (
@@ -44,6 +46,7 @@ PROGRAMS = {
             "Protein: 120g/day"
         ),
         "color": "#3498db",
+        "calorie_factor": 26,
     },
 }
 
@@ -52,7 +55,3 @@ GYM_METRICS = {
     "area_sq_ft": 10000,
     "break_even_members": 250,
 }
-
-
-def list_program_names():
-    return sorted(PROGRAMS.keys())
