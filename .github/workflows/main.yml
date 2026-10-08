@@ -1,0 +1,32 @@
+name: Aceest Fitness CI/CD
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  build-lint-docker-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build and Lint (compile / syntax check)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python -m compileall -q app.py aceest tests
+
+      - name: Docker Image Assembly
+        run: docker build -t aceest-fitness:ci .
+
+      - name: Automated Testing (pytest inside container)
+        run: docker run --rm aceest-fitness:ci pytest -v
