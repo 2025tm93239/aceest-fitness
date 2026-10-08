@@ -1,6 +1,7 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
-from aceest.programs import GYM_METRICS, PROGRAMS, list_program_names
+from aceest.programs import GYM_METRICS, PROGRAMS
+from aceest.services import estimate_calories, list_program_names
 
 
 def create_app() -> Flask:
@@ -29,8 +30,20 @@ def create_app() -> Flask:
                 "workout": data["workout"],
                 "diet": data["diet"],
                 "color": data["color"],
+                "calorie_factor": data["calorie_factor"],
             }
         )
+
+    @app.post("/calories")
+    def calories():
+        body = request.get_json(silent=True) or {}
+        try:
+            weight = float(body.get("weight_kg", 0))
+            program = str(body.get("program", ""))
+            value = estimate_calories(weight, program)
+        except (TypeError, ValueError, KeyError) as exc:
+            return jsonify({"error": str(exc)}), 400
+        return jsonify({"weight_kg": weight, "program": program, "calories": value})
 
     return app
 
