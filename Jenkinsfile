@@ -4,7 +4,6 @@ pipeline {
 
     environment {
         IMAGE_NAME = 'aceest-fitness'
-        // User-level pip installs on the Jenkins agent (no sudo required)
         PATH = "${env.HOME}/.local/bin:${env.PATH}"
     }
 
@@ -14,7 +13,6 @@ pipeline {
     }
 
     stages {
-        // SCM checkout is already done by "Pipeline from SCM"; this stage keeps the log explicit.
         stage('Checkout') {
             steps {
                 checkout scm
@@ -72,24 +70,50 @@ pipeline {
             steps {
                 sh """#!/bin/bash
                 set -euo pipefail
-                if ! docker info >/dev/null 2>&1; then
+
+                echo "Jenkins process user: \$(whoami)"
+                echo "Groups: \$(id)"
+                ls -la /var/run/docker.sock 2>/dev/null || echo "No docker.sock at /var/run/docker.sock"
+
+                DOCKER_CMD=docker
+                if docker info >/dev/null 2>&1; then
+                  echo "Using: docker (direct)"
+                elif command -v sudo >/dev/null 2>&1 && sudo -n docker info >/dev/null 2>&1; then
+                  DOCKER_CMD="sudo docker"
+                  echo "Using: sudo docker (passwordless sudo)"
+                else
                   echo "============================================================"
-                  echo "Docker permission denied for Jenkins user."
-                  echo "On the Jenkins Linux server (as root/sudo), run:"
+                  echo "Docker is not usable by this Jenkins user."
+                  echo ""
+                  echo "Fix A (preferred) — on the Jenkins server as sudo:"
+                  echo "  sudo systemctl enable --now docker"
                   echo "  sudo usermod -aG docker jenkins"
                   echo "  sudo systemctl restart jenkins"
-                  echo "Then verify: sudo -u jenkins docker ps"
+                  echo "  sudo -u jenkins docker ps"
+                  echo ""
+                  echo "Fix B — allow passwordless sudo for docker only:"
+                  echo "  sudo visudo"
+                  echo "  jenkins ALL=(ALL) NOPASSWD: /usr/bin/docker"
+                  echo ""
+                  echo "Fix C — lab workaround (insecure; dev VMs only):"
+                  echo "  sudo chmod 666 /var/run/docker.sock"
                   echo "============================================================"
                   exit 1
                 fi
-                docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} .
+
+                echo "\${DOCKER_CMD}" > .jenkins_docker_cmd
+                \${DOCKER_CMD} build -t ${IMAGE_NAME}:${BUILD_NUMBER} .
                 """
             }
         }
 
         stage('Tests in container') {
             steps {
-                sh "docker run --rm ${IMAGE_NAME}:${BUILD_NUMBER} python3 -m pytest -v"
+                sh """#!/bin/bash
+                set -euo pipefail
+                DOCKER_CMD=\$(cat .jenkins_docker_cmd)
+                \${DOCKER_CMD} run --rm ${IMAGE_NAME}:${BUILD_NUMBER} python3 -m pytest -v
+                """
             }
         }
     }
