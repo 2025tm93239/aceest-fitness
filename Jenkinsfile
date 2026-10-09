@@ -70,7 +70,20 @@ pipeline {
 
         stage('Docker build') {
             steps {
-                sh "docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} ."
+                sh """#!/bin/bash
+                set -euo pipefail
+                if ! docker info >/dev/null 2>&1; then
+                  echo "============================================================"
+                  echo "Docker permission denied for Jenkins user."
+                  echo "On the Jenkins Linux server (as root/sudo), run:"
+                  echo "  sudo usermod -aG docker jenkins"
+                  echo "  sudo systemctl restart jenkins"
+                  echo "Then verify: sudo -u jenkins docker ps"
+                  echo "============================================================"
+                  exit 1
+                fi
+                docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} .
+                """
             }
         }
 
