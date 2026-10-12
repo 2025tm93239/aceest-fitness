@@ -230,8 +230,8 @@ Workflow file: **`.github/workflows/main.yml`**
 
 ### Triggers
 
-- Every **push** to `main` or `master`
-- Every **pull_request** targeting `main` or `master`
+- Every **push** to `main`
+- Every **pull_request** targeting `main`
 
 ### Pipeline stages
 
@@ -290,15 +290,3 @@ After each run, the workspace is cleaned (`deleteDir`) so the next build starts 
 Detailed Jenkins installation steps: [`docs/JENKINS-SETUP.md`](docs/JENKINS-SETUP.md).
 
 ---
-
-## Desktop baseline versions
-
-The `versions/` directory stores the original ACEest Tkinter applications supplied for the course (v1.0 through v3.2.4). The Flask API reuses the same program definitions and business rules in a web-service form suitable for DevOps tooling.
-
----
-
-## License and course context
-
-This project was developed for academic coursework at **BITS Pilani** (CSI ZG514 — Introduction to DevOps). Use and redistribution are subject to your institution’s academic integrity policies.
-
-**Author:** Update with your name and BITS ID before submission.
