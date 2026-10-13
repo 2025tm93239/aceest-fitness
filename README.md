@@ -58,6 +58,7 @@ aceest-fitness/
 ├── docs/
 │   ├── JENKINS-SETUP.md                # Detailed Jenkins configuration guide
 │   └── jenkins-docker-fix.sh           # Jenkins agent Docker permission helper
+├── Screenshots and Video/              # Assignment evidence (CI/Jenkins logs, screenshots)
 ├── .github/
 │   └── workflows/
 │       └── main.yml                    # GitHub Actions CI/CD pipeline
@@ -66,7 +67,7 @@ aceest-fitness/
 ├── Jenkinsfile                         # Jenkins Pipeline from SCM
 ├── requirements.txt                    # Python dependencies
 ├── runtime.txt                         # Python version pin (python-3.9.21)
-├── pytest.ini                          # Pytest configuration (pythonpath)
+├── pytest.ini                          # Pytest config (pythonpath, testpaths, addopts)
 ├── README.md
 └── ACEest_Assignment1_Deliverables.docx
 ```
@@ -291,6 +292,22 @@ Configuration file: **`Jenkinsfile`** (Pipeline script from SCM).
 3. Branch: `*/main` (or your integration branch).
 4. Script Path: `Jenkinsfile`
 5. Run **Build Now**.
+
+# Troubleshooting steps
+## Please note that when I ran first time, then build got failed with below error: 
+
+#### Docker is not usable by this Jenkins user.
+
+### We need to run below commnad to resolve the above error.  
+Fix A (preferred) — on the Jenkins server as sudo:
+          
+          sudo systemctl enable --now docker
+
+          sudo usermod -aG docker jenkins
+          
+          sudo systemctl restart jenkins
+          
+          sudo -u jenkins docker ps
 
 ### Jenkins pipeline stages
 
