@@ -113,12 +113,6 @@ python app.py
 
 The server listens on **http://127.0.0.1:5000**.
 
-**Health check:**
-
-```bash
-curl -s http://127.0.0.1:5000/ | python3 -m json.tool
-```
-
 Expected response:
 
 ```json
@@ -146,28 +140,6 @@ Stop the server with `Ctrl+C`.
 | `POST` | `/clients` | Create or update a client profile |
 | `GET` | `/clients/<name>` | Get one client by name |
 
-**Example — calorie estimation:**
-
-```bash
-curl -s -X POST http://127.0.0.1:5000/calories \
-  -H "Content-Type: application/json" \
-  -d '{"weight_kg": 70, "program": "Fat Loss (FL)"}' | python3 -m json.tool
-```
-
-**Example — create client:**
-
-```bash
-curl -s -X POST http://127.0.0.1:5000/clients \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Ravi","age":28,"weight_kg":72,"program":"Muscle Gain (MG)","adherence_pct":85}' \
-  | python3 -m json.tool
-```
-
-**Example — list programs:**
-
-```bash
-curl -s http://127.0.0.1:5000/programs | python3 -m json.tool
-```
 
 ---
 
