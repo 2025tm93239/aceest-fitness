@@ -102,22 +102,25 @@ cd aceest-fitness
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
+python3 -m pytest --version   # should print pytest 8.3.x
+```
+
+Your shell should use the venv interpreter (not `/bin/python3`):
+
+```bash
+which python3    # expected: .../aceest-fitness/.venv/bin/python3
 ```
 
 ### 3. Run the Flask development server
 
+With the virtual environment still activated:
+
 ```bash
-python app.py
+python3 app.py
 ```
 
 The server listens on **http://127.0.0.1:5000**.
-
-**Health check:**
-
-```bash
-curl -s http://127.0.0.1:5000/ | python3 -m json.tool
-```
 
 Expected response:
 
@@ -146,44 +149,38 @@ Stop the server with `Ctrl+C`.
 | `POST` | `/clients` | Create or update a client profile |
 | `GET` | `/clients/<name>` | Get one client by name |
 
-**Example — calorie estimation:**
-
-```bash
-curl -s -X POST http://127.0.0.1:5000/calories \
-  -H "Content-Type: application/json" \
-  -d '{"weight_kg": 70, "program": "Fat Loss (FL)"}' | python3 -m json.tool
-```
-
-**Example — create client:**
-
-```bash
-curl -s -X POST http://127.0.0.1:5000/clients \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Ravi","age":28,"weight_kg":72,"program":"Muscle Gain (MG)","adherence_pct":85}' \
-  | python3 -m json.tool
-```
-
-**Example — list programs:**
-
-```bash
-curl -s http://127.0.0.1:5000/programs | python3 -m json.tool
-```
 
 ---
 
 ## Running tests manually
 
-From the repository root with the virtual environment activated:
+From the **`aceest-fitness/` repository root** (the folder that contains `app.py` and `pytest.ini`), activate the venv and install dependencies if you have not already:
 
 ```bash
-pytest -v
+cd aceest-fitness
+source .venv/bin/activate
+python3 -m pip install -r requirements.txt
+python3 -m pytest -v
 ```
+
+Use `python3 -m pytest` (instead of the bare `pytest` command) to match the Jenkins pipeline and avoid “command not found” when the venv `bin` folder is not on your PATH.
 
 Syntax / compile check (same as CI lint stage):
 
 ```bash
 python3 -m compileall -q app.py aceest tests
 ```
+
+**Expected result:** `8 passed` (five API tests in `test_app.py`, three service tests in `test_services.py`).
+
+### Troubleshooting
+
+| Symptom | What to do |
+|--------|------------|
+| `No module named pytest` | You are using system Python (`/bin/python3`). Run `source .venv/bin/activate`, then `python3 -m pip install -r requirements.txt`, and confirm `which python3` points to `.venv/bin/python3`. |
+| `pytest` / `python3` not found | Activate `.venv`, then run `python3 -m pytest -v`. |
+| `ModuleNotFoundError: app` or `aceest` | `cd` into `aceest-fitness/` before running tests (needs `pytest.ini` `pythonpath = .`). |
+| Dependencies missing | `python3 -m pip install -r requirements.txt` inside the activated venv. |
 
 Tests cover:
 
@@ -224,6 +221,27 @@ docker run --rm aceest-fitness:latest pytest -v
 docker stop aceest
 docker rm aceest
 ```
+
+### Troubleshooting
+
+**`bind: address already in use` on port 5000** — Something else on the VM is already listening on `5000` (often a leftover `aceest` container, another Docker mapping, or the Flask dev server from `python3 app.py`). Check and free the port:
+
+```bash
+docker ps -a --filter name=aceest
+docker stop aceest 2>/dev/null; docker rm aceest 2>/dev/null
+ss -tlnp | grep ':5000'    # or: sudo lsof -i :5000
+```
+
+Stop the process shown (e.g. `Ctrl+C` in the terminal running Flask), then run the container again.
+
+**Or** map the API to another host port (container still uses 5000 internally):
+
+```bash
+docker run -d -p 5001:5000 --name aceest aceest-fitness:latest
+curl http://127.0.0.1:5001/
+```
+
+If `docker run` failed after creating a container, remove the broken instance before retrying: `docker rm -f aceest`.
 
 **Image notes:**
 

@@ -1,0 +1,220 @@
+Started by user cloud
+Obtained Jenkinsfile from git https://github.com/2025tm93239/aceest-fitness.git
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/aceest-fitness-build
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+Cloning the remote Git repository
+Cloning repository https://github.com/2025tm93239/aceest-fitness.git
+ > git init /var/lib/jenkins/workspace/aceest-fitness-build # timeout=10
+Fetching upstream changes from https://github.com/2025tm93239/aceest-fitness.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.43.5'
+ > git fetch --tags --force --progress -- https://github.com/2025tm93239/aceest-fitness.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/2025tm93239/aceest-fitness.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision 401e552fbaccfacb96c1ac402571ed88ff6826b2 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 401e552fbaccfacb96c1ac402571ed88ff6826b2 # timeout=10
+Commit message: "Merge pull request #14 from 2025tm93239/Sheetal_UpdateReadME"
+ > git rev-list --no-walk 401e552fbaccfacb96c1ac402571ed88ff6826b2 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] timestamps
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Checkout)
+[Pipeline] checkout
+19:38:43  Selected Git installation does not exist. Using Default
+19:38:43  The recommended git tool is: NONE
+19:38:43  No credentials specified
+19:38:43   > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/aceest-fitness-build/.git # timeout=10
+19:38:43  Fetching changes from the remote Git repository
+19:38:43   > git config remote.origin.url https://github.com/2025tm93239/aceest-fitness.git # timeout=10
+19:38:43  Fetching upstream changes from https://github.com/2025tm93239/aceest-fitness.git
+19:38:43   > git --version # timeout=10
+19:38:43   > git --version # 'git version 2.43.5'
+19:38:43   > git fetch --tags --force --progress -- https://github.com/2025tm93239/aceest-fitness.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+19:38:43   > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+19:38:43  Checking out Revision 401e552fbaccfacb96c1ac402571ed88ff6826b2 (refs/remotes/origin/main)
+19:38:43   > git config core.sparsecheckout # timeout=10
+19:38:43   > git checkout -f 401e552fbaccfacb96c1ac402571ed88ff6826b2 # timeout=10
+19:38:43  Commit message: "Merge pull request #14 from 2025tm93239/Sheetal_UpdateReadME"
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Install dependencies)
+[Pipeline] sh
+19:38:44  Python: Python 3.9.21
+19:38:45  Requirement already satisfied: pip in /var/lib/jenkins/.local/lib/python3.9/site-packages (26.0.1)
+19:38:46  Requirement already satisfied: Flask==3.0.3 in /var/lib/jenkins/.local/lib/python3.9/site-packages (from -r requirements.txt (line 1)) (3.0.3)
+19:38:46  Requirement already satisfied: pytest==8.3.3 in /var/lib/jenkins/.local/lib/python3.9/site-packages (from -r requirements.txt (line 2)) (8.3.3)
+19:38:46  Requirement already satisfied: Werkzeug>=3.0.0 in /var/lib/jenkins/.local/lib/python3.9/site-packages (from Flask==3.0.3->-r requirements.txt (line 1)) (3.1.9)
+19:38:46  Requirement already satisfied: Jinja2>=3.1.2 in /var/lib/jenkins/.local/lib/python3.9/site-packages (from Flask==3.0.3->-r requirements.txt (line 1)) (3.1.6)
+19:38:46  Requirement already satisfied: itsdangerous>=2.1.2 in /var/lib/jenkins/.local/lib/python3.9/site-packages (from Flask==3.0.3->-r requirements.txt (line 1)) (2.2.0)
+19:38:46  Requirement already satisfied: click>=8.1.3 in /var/lib/jenkins/.local/lib/python3.9/site-packages (from Flask==3.0.3->-r requirements.txt (line 1)) (8.1.8)
+19:38:46  Requirement already satisfied: blinker>=1.6.2 in /var/lib/jenkins/.local/lib/python3.9/site-packages (from Flask==3.0.3->-r requirements.txt (line 1)) (1.9.0)
+19:38:46  Requirement already satisfied: importlib-metadata>=3.6.0 in /var/lib/jenkins/.local/lib/python3.9/site-packages (from Flask==3.0.3->-r requirements.txt (line 1)) (8.7.1)
+19:38:46  Requirement already satisfied: iniconfig in /var/lib/jenkins/.local/lib/python3.9/site-packages (from pytest==8.3.3->-r requirements.txt (line 2)) (2.1.0)
+19:38:46  Requirement already satisfied: packaging in /var/lib/jenkins/.local/lib/python3.9/site-packages (from pytest==8.3.3->-r requirements.txt (line 2)) (26.3)
+19:38:46  Requirement already satisfied: pluggy<2,>=1.5 in /var/lib/jenkins/.local/lib/python3.9/site-packages (from pytest==8.3.3->-r requirements.txt (line 2)) (1.6.0)
+19:38:46  Requirement already satisfied: exceptiongroup>=1.0.0rc8 in /var/lib/jenkins/.local/lib/python3.9/site-packages (from pytest==8.3.3->-r requirements.txt (line 2)) (1.3.1)
+19:38:46  Requirement already satisfied: tomli>=1 in /var/lib/jenkins/.local/lib/python3.9/site-packages (from pytest==8.3.3->-r requirements.txt (line 2)) (2.5.0)
+19:38:46  Requirement already satisfied: typing-extensions>=4.6.0 in /var/lib/jenkins/.local/lib/python3.9/site-packages (from exceptiongroup>=1.0.0rc8->pytest==8.3.3->-r requirements.txt (line 2)) (4.16.0)
+19:38:46  Requirement already satisfied: zipp>=3.20 in /var/lib/jenkins/.local/lib/python3.9/site-packages (from importlib-metadata>=3.6.0->Flask==3.0.3->-r requirements.txt (line 1)) (3.23.1)
+19:38:46  Requirement already satisfied: MarkupSafe>=2.0 in /var/lib/jenkins/.local/lib/python3.9/site-packages (from Jinja2>=3.1.2->Flask==3.0.3->-r requirements.txt (line 1)) (3.0.4)
+19:38:46  pip 26.0.1 from /var/lib/jenkins/.local/lib/python3.9/site-packages/pip (python 3.9)
+19:38:47  pytest 8.3.3
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build (compile / syntax))
+[Pipeline] sh
+19:38:47  compileall OK
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Quality gate — unit tests)
+[Pipeline] sh
+19:38:48  ============================= test session starts ==============================
+19:38:48  platform linux -- Python 3.9.21, pytest-8.3.3, pluggy-1.6.0 -- /usr/bin/python3
+19:38:48  cachedir: .pytest_cache
+19:38:48  rootdir: /var/lib/jenkins/workspace/aceest-fitness-build
+19:38:48  configfile: pytest.ini
+19:38:48  testpaths: tests
+19:38:48  collecting ... collected 8 items
+19:38:48  
+19:38:48  tests/test_app.py::test_health PASSED                                    [ 12%]
+19:38:48  tests/test_app.py::test_list_programs PASSED                             [ 25%]
+19:38:48  tests/test_app.py::test_program_detail_not_found PASSED                  [ 37%]
+19:38:48  tests/test_app.py::test_create_and_fetch_client PASSED                   [ 50%]
+19:38:48  tests/test_app.py::test_calories_endpoint PASSED                         [ 62%]
+19:38:48  tests/test_services.py::test_estimate_calories_fat_loss PASSED           [ 75%]
+19:38:48  tests/test_services.py::test_estimate_calories_rejects_invalid_weight PASSED [ 87%]
+19:38:48  tests/test_services.py::test_validate_client_payload_success PASSED      [100%]
+19:38:48  
+19:38:48  ============================== 8 passed in 0.08s ===============================
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Docker build)
+[Pipeline] sh
+19:38:49  Jenkins process user: jenkins
+19:38:49  Groups: uid=981(jenkins) gid=980(jenkins) groups=980(jenkins),981(docker) context=system_u:system_r:unconfined_service_t:s0
+19:38:49  srw-rw-rw-. 1 root docker 0 Oct 13 16:40 /var/run/docker.sock
+19:38:49  Using: docker (direct)
+19:38:49  #0 building with "default" instance using docker driver
+19:38:49  
+19:38:49  #1 [internal] load build definition from Dockerfile
+19:38:49  #1 transferring dockerfile: 748B done
+19:38:49  #1 DONE 0.0s
+19:38:49  
+19:38:49  #2 [internal] load metadata for docker.io/library/python:3.9-slim
+19:38:50  #2 DONE 1.0s
+19:38:50  
+19:38:50  #3 [internal] load .dockerignore
+19:38:50  #3 transferring context: 178B done
+19:38:50  #3 DONE 0.0s
+19:38:50  
+19:38:50  #4 [1/9] FROM docker.io/library/python:3.9-slim@sha256:2d97f6910b16bd338d3060f261f53f144965f755599aab1acda1e13cf1731b1b
+19:38:50  #4 DONE 0.0s
+19:38:50  
+19:38:50  #5 [internal] load build context
+19:38:50  #5 transferring context: 24.44kB 0.1s done
+19:38:51  #5 DONE 0.1s
+19:38:51  
+19:38:51  #6 [2/9] WORKDIR /app
+19:38:51  #6 CACHED
+19:38:51  
+19:38:51  #7 [3/9] RUN adduser --disabled-password --gecos "" appuser
+19:38:51  #7 CACHED
+19:38:51  
+19:38:51  #8 [4/9] COPY requirements.txt .
+19:38:51  #8 CACHED
+19:38:51  
+19:38:51  #9 [5/9] RUN pip install --no-cache-dir -r requirements.txt gunicorn==22.0.0
+19:38:51  #9 CACHED
+19:38:51  
+19:38:51  #10 [6/9] COPY app.py .
+19:38:51  #10 CACHED
+19:38:51  
+19:38:51  #11 [7/9] COPY aceest ./aceest
+19:38:51  #11 DONE 0.1s
+19:38:51  
+19:38:51  #12 [8/9] COPY pytest.ini .
+19:38:51  #12 DONE 0.1s
+19:38:51  
+19:38:51  #13 [9/9] COPY tests ./tests
+19:38:51  #13 DONE 0.1s
+19:38:51  
+19:38:51  #14 exporting to image
+19:38:51  #14 exporting layers
+19:38:51  #14 exporting layers 0.1s done
+19:38:51  #14 writing image sha256:40d9ade46ac9ccd3d9c181118dc4963e2e0607210bcdc2500a3bd6a348ab0943 0.0s done
+19:38:51  #14 naming to docker.io/library/aceest-fitness:3
+19:38:51  #14 naming to docker.io/library/aceest-fitness:3 0.0s done
+19:38:51  #14 DONE 0.2s
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Tests in container)
+[Pipeline] sh
+19:38:54  ============================= test session starts ==============================
+19:38:54  platform linux -- Python 3.9.25, pytest-8.3.3, pluggy-1.6.0 -- /usr/local/bin/python3
+19:38:54  cachedir: .pytest_cache
+19:38:54  rootdir: /app
+19:38:54  configfile: pytest.ini
+19:38:54  testpaths: tests
+19:38:54  collecting ... collected 8 items
+19:38:54  
+19:38:54  tests/test_app.py::test_health PASSED                                    [ 12%]
+19:38:54  tests/test_app.py::test_list_programs PASSED                             [ 25%]
+19:38:54  tests/test_app.py::test_program_detail_not_found PASSED                  [ 37%]
+19:38:54  tests/test_app.py::test_create_and_fetch_client PASSED                   [ 50%]
+19:38:54  tests/test_app.py::test_calories_endpoint PASSED                         [ 62%]
+19:38:54  tests/test_services.py::test_estimate_calories_fat_loss PASSED           [ 75%]
+19:38:54  tests/test_services.py::test_estimate_calories_rejects_invalid_weight PASSED [ 87%]
+19:38:54  tests/test_services.py::test_validate_client_payload_success PASSED      [100%]
+19:38:54  
+19:38:54  =============================== warnings summary ===============================
+19:38:54  ../usr/local/lib/python3.9/site-packages/_pytest/cacheprovider.py:475
+19:38:54    /usr/local/lib/python3.9/site-packages/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /app/.pytest_cache/v/cache/nodeids: [Errno 13] Permission denied: '/app/pytest-cache-files-94isjvtf'
+19:38:54      config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+19:38:54  
+19:38:54  ../usr/local/lib/python3.9/site-packages/_pytest/stepwise.py:51
+19:38:54    /usr/local/lib/python3.9/site-packages/_pytest/stepwise.py:51: PytestCacheWarning: could not create cache path /app/.pytest_cache/v/cache/stepwise: [Errno 13] Permission denied: '/app/pytest-cache-files-slerrqs3'
+19:38:54      session.config.cache.set(STEPWISE_CACHE_DIR, [])
+19:38:54  
+19:38:54  -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+19:38:54  ======================== 8 passed, 2 warnings in 0.19s =========================
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] deleteDir
+[Pipeline] echo
+19:38:55  BUILD passed on Linux agent.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // timestamps
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
