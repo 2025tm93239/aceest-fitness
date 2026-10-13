@@ -222,6 +222,27 @@ docker stop aceest
 docker rm aceest
 ```
 
+### Troubleshooting
+
+**`bind: address already in use` on port 5000** — Something else on the VM is already listening on `5000` (often a leftover `aceest` container, another Docker mapping, or the Flask dev server from `python3 app.py`). Check and free the port:
+
+```bash
+docker ps -a --filter name=aceest
+docker stop aceest 2>/dev/null; docker rm aceest 2>/dev/null
+ss -tlnp | grep ':5000'    # or: sudo lsof -i :5000
+```
+
+Stop the process shown (e.g. `Ctrl+C` in the terminal running Flask), then run the container again.
+
+**Or** map the API to another host port (container still uses 5000 internally):
+
+```bash
+docker run -d -p 5001:5000 --name aceest aceest-fitness:latest
+curl http://127.0.0.1:5001/
+```
+
+If `docker run` failed after creating a container, remove the broken instance before retrying: `docker rm -f aceest`.
+
 **Image notes:**
 
 - Base image: `python:3.9-slim` (aligned with lab VM Python 3.9.21)
