@@ -1,12 +1,14 @@
 # ACEest Fitness & Gym
 
-Automated CI/CD reference implementation for **CSI ZG514 / SEZG514 — Introduction to DevOps (Assignment 1)**.
+**CSI ZG514 / SEZG514 — Introduction to DevOps (Assignment 1)**.
+
+Assignment Overview: Implementing Automated CI/CD Pipelines for ACEest Fitness & Gym
+Objective - This assignment is designed to provide students with comprehensive, hands-on experience in modern DevOps methodologies. By executing this project, students will attain professional proficiency in Version Control (Git/GitHub), Containerization (Docker), and the orchestration of Continuous Integration and Continuous Delivery (CI/CD) pipelines using GitHub Actions and Jenkins.
+
 
 ACEest is a Flask REST API for gym program management: training plans, calorie estimation, client profiles, and facility metrics. The project demonstrates version control, unit testing, Docker containerization, Jenkins BUILD quality gates, and GitHub Actions CI/CD.
 
-**Repository:** https://github.com/2025tm93239/aceest-fitness
-
-All commands below assume a **Bash** shell (Linux, macOS, or Git Bash on Windows).
+**Git Repository:** https://github.com/2025tm93239/aceest-fitness
 
 ---
 
@@ -21,8 +23,6 @@ All commands below assume a **Bash** shell (Linux, macOS, or Git Bash on Windows
 - [Docker](#docker)
 - [GitHub Actions (CI/CD)](#github-actions-cicd)
 - [Jenkins (BUILD and quality gate)](#jenkins-build-and-quality-gate)
-- [Desktop baseline versions](#desktop-baseline-versions)
-- [License and course context](#license-and-course-context)
 
 ---
 
@@ -44,22 +44,31 @@ The API logic is derived from the instructor-provided ACEest desktop scripts (`v
 
 ```
 aceest-fitness/
-├── app.py                      # Flask application entry point
-├── aceest/
-│   ├── programs.py             # Program catalog and gym metrics
-│   ├── services.py             # Business logic (calories, validation)
-│   └── storage.py              # In-memory client store
+├── app.py                              # Flask application entry point
+├── aceest/                             # REST API package
+│   ├── __init__.py
+│   ├── programs.py                     # Program catalog and gym metrics
+│   ├── services.py                     # Business logic (calories, validation)
+│   └── storage.py                      # In-memory client store
 ├── tests/
-│   ├── conftest.py
-│   ├── test_app.py             # API integration tests
-│   └── test_services.py        # Unit tests for services
-├── versions/                   # Historical Tkinter baseline scripts
-├── Dockerfile
-├── Jenkinsfile
-├── requirements.txt
-├── pytest.ini
-├── .github/workflows/main.yml
-└── docs/JENKINS-SETUP.md       # Detailed Jenkins configuration guide
+│   ├── conftest.py                     # Pytest fixtures and shared setup
+│   ├── test_app.py                     # API integration tests
+│   └── test_services.py                # Unit tests for services
+├── versions/                           # Historical Tkinter baseline (Aceestver-*.py)
+├── docs/
+│   ├── JENKINS-SETUP.md                # Detailed Jenkins configuration guide
+│   └── jenkins-docker-fix.sh           # Jenkins agent Docker permission helper
+├── .github/
+│   └── workflows/
+│       └── main.yml                    # GitHub Actions CI/CD pipeline
+├── Dockerfile                          # Container image (Gunicorn on port 5000)
+├── .dockerignore                       # Build context exclusions (e.g. versions/, .venv)
+├── Jenkinsfile                         # Jenkins Pipeline from SCM
+├── requirements.txt                    # Python dependencies
+├── runtime.txt                         # Python version pin (python-3.9.21)
+├── pytest.ini                          # Pytest configuration (pythonpath)
+├── README.md
+└── ACEest_Assignment1_Deliverables.docx
 ```
 
 ---
