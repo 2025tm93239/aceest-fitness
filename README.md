@@ -102,13 +102,22 @@ cd aceest-fitness
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
+python3 -m pytest --version   # should print pytest 8.3.x
+```
+
+Your shell should use the venv interpreter (not `/bin/python3`):
+
+```bash
+which python3    # expected: .../aceest-fitness/.venv/bin/python3
 ```
 
 ### 3. Run the Flask development server
 
+With the virtual environment still activated:
+
 ```bash
-python app.py
+python3 app.py
 ```
 
 The server listens on **http://127.0.0.1:5000**.
@@ -145,17 +154,33 @@ Stop the server with `Ctrl+C`.
 
 ## Running tests manually
 
-From the repository root with the virtual environment activated:
+From the **`aceest-fitness/` repository root** (the folder that contains `app.py` and `pytest.ini`), activate the venv and install dependencies if you have not already:
 
 ```bash
-pytest -v
+cd aceest-fitness
+source .venv/bin/activate
+python3 -m pip install -r requirements.txt
+python3 -m pytest -v
 ```
+
+Use `python3 -m pytest` (instead of the bare `pytest` command) to match the Jenkins pipeline and avoid “command not found” when the venv `bin` folder is not on your PATH.
 
 Syntax / compile check (same as CI lint stage):
 
 ```bash
 python3 -m compileall -q app.py aceest tests
 ```
+
+**Expected result:** `8 passed` (five API tests in `test_app.py`, three service tests in `test_services.py`).
+
+### Troubleshooting
+
+| Symptom | What to do |
+|--------|------------|
+| `No module named pytest` | You are using system Python (`/bin/python3`). Run `source .venv/bin/activate`, then `python3 -m pip install -r requirements.txt`, and confirm `which python3` points to `.venv/bin/python3`. |
+| `pytest` / `python3` not found | Activate `.venv`, then run `python3 -m pytest -v`. |
+| `ModuleNotFoundError: app` or `aceest` | `cd` into `aceest-fitness/` before running tests (needs `pytest.ini` `pythonpath = .`). |
+| Dependencies missing | `python3 -m pip install -r requirements.txt` inside the activated venv. |
 
 Tests cover:
 
